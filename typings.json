@@ -1,5 +1,5 @@
 {
-  "name": "mouseroom",
+  "name": "million-mat-labyrinth",
   "globalDependencies": {
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts",
     "socket.io": "github:DefinitelyTyped/DefinitelyTyped/socket.io/socket.io.d.ts",
