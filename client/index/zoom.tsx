@@ -1,21 +1,16 @@
-import * as React from "react";
-import {Client} from 'corona-client';
-require('./mousePool.scss');
+import * as React from "react"
+import {Client} from 'corona-client'
+import {IPlayer} from './../../interface/IPlayer'
+import {IPlayerController} from './../../interface/IPlayerController'
 
-interface IMouse {
-  position: {
-    x: number,
-    y: number
-  },
-  color: string,
+require('./zoom.scss');
+
+type PlayerMap = {
+  [id: string]: IPlayer
 }
 
-type MouseMap = {
-  [id: string]: IMouse
-}
-
-interface IMousePoolState {
-  mouses?: MouseMap,
+interface IZoomState {
+  players?: PlayerMap,
   initialized?: boolean
 }
 
@@ -35,30 +30,30 @@ interface IMousePoolState {
 //   color;
 // }
 
-export default class MousePool extends React.Component<{}, IMousePoolState> {
+export default class Zoom extends React.Component<{}, IZoomState> {
   // Corona Client
   client: Client
-  controller: any
+  controller: IPlayerController
   you: string
   
   constructor(props: {}, context?: any) {
     super(props, context);
     this.state = {
       initialized: false,
-      mouses: {},
+      players: {},
     };
   }
   componentDidMount() {
     var self = this;
     // 链接Corona
     var client = new Client('ws://localhost:8080/', function (controller) {
-      controller.getModels('mouses', 'mouse').then(([mouses, mouse]) => {
+      controller.getModels('players', 'player').then(([players, player]) => {
         // 设置本身
-        self.you = mouse.data._id;
+        self.you = player.data._id;
         // 初始化已有鼠标
-        self.state.mouses = mouses.dataMap;
+        self.state.players = players.dataMap;
         // 更新位置
-        mouses.on('*.change', () => { self.updateMouses() })
+        players.on('*.change', () => { self.updateMouses() })
         // 新增鼠标
         .on('add', () => { self.updateMouses() })
         // 删除鼠标
@@ -75,16 +70,16 @@ export default class MousePool extends React.Component<{}, IMousePoolState> {
       initialized: true
     }, callback);
   }
-  updateMouses(mouses?: MouseMap, callback?: () => void) {
-    mouses = mouses || this.state.mouses;
+  updateMouses(mouses?: PlayerMap, callback?: () => void) {
+    mouses = mouses || this.state.players;
     this.setState({
-      mouses: mouses
+      players: mouses
     }, callback)
   }
   handleMouseMove(e: React.MouseEvent) {
     if (this.state.initialized) {
       // TODO 向Corona更新自身位置
-      this.controller.update(e.pageX, e.pageY);
+      this.controller.updatePosition(e.pageX, e.pageY);
     }
   }
   render() {
@@ -95,8 +90,8 @@ export default class MousePool extends React.Component<{}, IMousePoolState> {
             <div className="loading">Loading...</div>
         }
         {
-          Object.keys(this.state.mouses).map(key => {
-            return <div className="mouse iconfont icon-shubiao" style={{ left: this.state.mouses[key].position.x, top: this.state.mouses[key].position.y, color: this.state.mouses[key].color }} key={key}></div>
+          Object.keys(this.state.players).map(key => {
+            return <div className="mouse iconfont icon-shubiao" style={{ left: this.state.players[key].position.x, top: this.state.players[key].position.y, color: this.state.players[key].color }} key={key}></div>
           })
         }
       </div>
