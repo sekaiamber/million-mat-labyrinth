@@ -1,5 +1,5 @@
 import {Server} from 'corona'
-import {MouseController} from './app/controllers'
+import {PlayerController} from './app/controllers'
 import http = require('http')
 import express = require('express')
 import repl = require("repl");
@@ -9,7 +9,7 @@ server.listen(8080);
 app.use(express.static('public'));
 
 var coronaServer = new Server({
-  '/*path': MouseController
+  '/*path': PlayerController
 }, server);
 
 var replServer = repl.start({

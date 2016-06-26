@@ -1,11 +1,11 @@
 import * as React from "react";
-import MousePool from "./mousePool";
+import Zoom from "./zoom";
 
 export class Index extends React.Component<{}, {}> {
   render() {
     return (
-      <div id="MouseZoom">
-        <MousePool />
+      <div id="Zoom">
+        <Zoom />
       </div>
     );
   }
