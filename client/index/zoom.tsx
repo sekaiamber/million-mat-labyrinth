@@ -14,22 +14,6 @@ interface IZoomState {
   initialized?: boolean
 }
 
-/**
- * Mouse 类，方便初始化
- */
-// class Mouse implements IMouse {
-//   constructor(x: number = 0, y: number = 0, color?) {
-//     this.position = {
-//       x: x,
-//       y: y
-//     }
-//     color = color || `rgb(${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())})`;
-//     this.color = color;
-//   }
-//   position;
-//   color;
-// }
-
 export default class Zoom extends React.Component<{}, IZoomState> {
   // Corona Client
   client: Client
@@ -46,7 +30,7 @@ export default class Zoom extends React.Component<{}, IZoomState> {
   componentDidMount() {
     var self = this;
     // 链接Corona
-    var client = new Client('ws://localhost:8080/', function (controller) {
+    var client = new Client('/players', function (controller) {
       controller.getModels('players', 'player').then(([players, player]) => {
         // 设置本身
         self.you = player.data._id;
