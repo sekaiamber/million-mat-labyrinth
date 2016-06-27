@@ -1,5 +1,5 @@
 import {Server} from 'corona'
-import {PlayerController} from './app/controllers'
+import controllers from './app/controllers'
 import http = require('http')
 import express = require('express')
 import repl = require("repl");
@@ -8,9 +8,7 @@ var server = http.createServer(app);
 server.listen(8080);
 app.use(express.static('public'));
 
-var coronaServer = new Server({
-  '/*path': PlayerController
-}, server);
+var coronaServer = new Server(controllers, server);
 
 var replServer = repl.start({
     prompt: "game > ",
