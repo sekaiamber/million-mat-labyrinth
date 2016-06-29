@@ -1,6 +1,7 @@
 import {Controller} from 'corona'
 import {Player, PlayerRepository} from './../models/player'
 import {IPlayerController} from './../../interface/IPlayerController'
+import {ExposedMethod} from './../utils/utils';
 
 var playerRepo: PlayerRepository = new PlayerRepository(Player);
 var players = playerRepo.toModel();
@@ -10,7 +11,6 @@ export class PlayerController extends Controller implements IPlayerController {
     private players: any;
 
     init(params, done) {
-        this.expose('updatePosition');
         return playerRepo.create({
             position: { x: 0, y: 0},
             color: `rgb(${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())})`
@@ -24,6 +24,7 @@ export class PlayerController extends Controller implements IPlayerController {
         }).timeout(1000);
     }
 
+    @ExposedMethod
     updatePosition(x, y) {
         this.player.set('position.x', x)
         this.player.set('position.y', y);

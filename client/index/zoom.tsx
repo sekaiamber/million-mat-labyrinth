@@ -19,6 +19,8 @@ export default class Zoom extends React.Component<{}, IZoomState> {
   client: Client
   controller: IPlayerController
   you: string
+
+  zoom: HTMLDivElement
   
   constructor(props: {}, context?: any) {
     super(props, context);
@@ -34,6 +36,7 @@ export default class Zoom extends React.Component<{}, IZoomState> {
       controller.getModels('players', 'player').then(([players, player]) => {
         // 设置本身
         self.you = player.data._id;
+        console.log(player.data);
         // 初始化已有鼠标
         self.state.players = players.dataMap;
         // 更新位置
@@ -68,7 +71,7 @@ export default class Zoom extends React.Component<{}, IZoomState> {
   }
   render() {
     return (
-      <div className="mouse-pool" onMouseMove={this.handleMouseMove.bind(this) }>
+      <div className="mouse-pool" onMouseMove={this.handleMouseMove.bind(this) } ref={(c) => this.zoom = c}>
         {
           this.state.initialized ? null :
             <div className="loading">Loading...</div>
