@@ -7,6 +7,7 @@
     "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts",
     "express-serve-static-core": "github:DefinitelyTyped/DefinitelyTyped/express-serve-static-core/express-serve-static-core.d.ts",
     "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts",
-    "react-dom": "github:DefinitelyTyped/DefinitelyTyped/react/react-dom.d.ts"
+    "react-dom": "github:DefinitelyTyped/DefinitelyTyped/react/react-dom.d.ts",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts"
   }
 }

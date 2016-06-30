@@ -2,12 +2,13 @@ import {Broker} from 'corona-client'
 import GameComponent from './../gameComponent/gameComponent'
 
 export default class ControllerContainer {
-  static name: string
+  name = ''
+
   components: {
     [key: string]: GameComponent
   }
 
-  constructor(private controller: Broker, private zoom: HTMLDivElement) {
+  constructor(protected controller: Broker, protected zoom: HTMLDivElement) {
     this.components = {};
   }
 
