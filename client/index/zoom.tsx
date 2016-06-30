@@ -1,7 +1,8 @@
 import * as React from "react"
 import {Client} from 'corona-client'
 import {IPlayer} from './../../interface/IPlayer'
-import {IPlayerController} from './../../interface/IPlayerController'
+import PlayerControllerContainer from './controller/player'
+import ControllerContainer from './controller/controllerContainer'
 
 require('./zoom.scss');
 
@@ -17,13 +18,17 @@ interface IZoomState {
 export default class Zoom extends React.Component<{}, IZoomState> {
   // Corona Client
   client: Client
-  controller: IPlayerController
+  controller
   you: string
 
   zoom: HTMLDivElement
+  containers: {
+    [id: string]: ControllerContainer
+  }
   
   constructor(props: {}, context?: any) {
     super(props, context);
+    this.containers = {};
     this.state = {
       initialized: false,
       players: {},
@@ -33,21 +38,32 @@ export default class Zoom extends React.Component<{}, IZoomState> {
     var self = this;
     // 链接Corona
     var client = new Client('/players', function (controller) {
-      controller.getModels('players', 'player').then(([players, player]) => {
-        // 设置本身
-        self.you = player.data._id;
-        console.log(player.data);
-        // 初始化已有鼠标
-        self.state.players = players.dataMap;
-        // 更新位置
-        players.on('*.change', () => { self.updateMouses() })
-        // 新增鼠标
-        .on('add', () => { self.updateMouses() })
-        // 删除鼠标
-        .on('remove', () => { self.updateMouses() });
-        // 初始化组件
-        self.initialize();
-      });
+      let CPlayer = new PlayerControllerContainer(controller, self.zoom);
+      console.log(CPlayer);
+      setTimeout(() => {
+        Object.keys(CPlayer.components).map((k) => {
+          console.log('binding ' + k)
+          let co = CPlayer.components[k];
+          co.on('click', () => {console.log('aaa')});
+          (co as any).onInit(() => {console.log('bbb')});
+          (co as any).onClick(() => {console.log('ccc')});
+        })
+
+      }, 2000)
+      // controller.getModels('players', 'player').then(([players, player]) => {
+      //   // 设置本身
+      //   self.you = player.data._id;
+      //   // 初始化已有鼠标
+      //   self.state.players = players.dataMap;
+      //   // 更新位置
+      //   players.on('*.change', () => { self.updateMouses() })
+      //   // 新增鼠标
+      //   .on('add', () => { self.updateMouses() })
+      //   // 删除鼠标
+      //   .on('remove', () => { self.updateMouses() });
+      //   // 初始化组件
+      //   self.initialize();
+      // });
       self.controller = controller;
     });
     this.client = client;
