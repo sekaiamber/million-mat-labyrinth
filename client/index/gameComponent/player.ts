@@ -13,10 +13,16 @@ export default class PlayerGameComponent extends GameComponent {
     this.id = model.data._id;
     let dom = this.getDom(model.data);
     $(zoom).append(dom);
+    // initialized
+    this.initialized = true;
+    this.fire('initialize');
   }
 
   updatePosition(x: number, y: number) {
-
+    this.dom.css({
+      top: y,
+      left: x
+    });
   }
 
   getDom(data: IPlayer) {

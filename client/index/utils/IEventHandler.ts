@@ -4,6 +4,7 @@ export interface IEventHandler {
   }
 
   on(eventName: string, callback: Function): void
+  fire(eventName: string): any
 }
 
 export function Events(...eventNames: string[]) {
@@ -13,23 +14,23 @@ export function Events(...eventNames: string[]) {
     for (var i = 0; i < eventNames.length; i++) {
       var e = eventNames[i];
       e = e.replace(/^\S/, (s) => s.toUpperCase());
-      if (!target['on' + e]) {
-        target['on' + e] = ((name) => function (callback: Function) {
-          this.on(name, callback);
+      if (!target[propertyKey + e]) {
+        target[propertyKey + e] = ((name) => function (...args) {
+          this.on(name, ...args);
         })(e);
       }
     }
 
     return {
-      value: function (eventName: string, callback: Function) {
-        eventName = eventName.toLowerCase();
+      value: function (...args) {
+        let eventName = args[0].toLowerCase();
         if (eventNames.indexOf(eventName) == -1) {
           throw "This object have no event named " + eventName;
         }
         if (!this.events[eventName]) {
           this.events[eventName] = []
         }
-        var result = descriptor.value.apply(this, [eventName, callback]);
+        var result = descriptor.value.apply(this, args);
         return result;
       }
     }
