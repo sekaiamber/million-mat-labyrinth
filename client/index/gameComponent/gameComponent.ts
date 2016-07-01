@@ -6,15 +6,20 @@ export default class GameComponent implements IEventHandler {
   initialized = false;
   events: {
     [key: string]: Function[]
-  }
+  } = {}
 
   constructor(private model: ModelProxy, private zoom: HTMLDivElement) {
-    this.events = {}
   }
 
-  @Events('click', 'Init')
+  @Events('initialize')
   on(eventName: string, callback: Function) {
-    console.log(eventName);
     this.events[eventName].push(callback);
+  }
+
+  @Events('initialize')
+  fire(eventName: string, ...args) {
+    for (var i = 0; i < this.events[eventName].length; i++) {
+      this.events[eventName][i](...args);
+    }
   }
 }

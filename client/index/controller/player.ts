@@ -23,6 +23,8 @@ export default class PlayerControllerContainer extends ControllerContainer {
             self.addComponent(k, p);
           }
         });
+
+        self.fire('initialize');
       })
   }
 

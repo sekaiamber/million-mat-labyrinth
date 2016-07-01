@@ -40,16 +40,8 @@ export default class Zoom extends React.Component<{}, IZoomState> {
     var client = new Client('/players', function (controller) {
       let CPlayer = new PlayerControllerContainer(controller, self.zoom);
       console.log(CPlayer);
-      setTimeout(() => {
-        Object.keys(CPlayer.components).map((k) => {
-          console.log('binding ' + k)
-          let co = CPlayer.components[k];
-          co.on('click', () => {console.log('aaa')});
-          (co as any).onInit(() => {console.log('bbb')});
-          (co as any).onClick(() => {console.log('ccc')});
-        })
-
-      }, 2000)
+      CPlayer.on('initialize', () => {console.log(111)});
+      
       // controller.getModels('players', 'player').then(([players, player]) => {
       //   // 设置本身
       //   self.you = player.data._id;
