@@ -39,8 +39,7 @@ export default class Zoom extends React.Component<{}, IZoomState> {
     // 链接Corona
     var client = new Client('/players', function (controller) {
       let CPlayer = new PlayerControllerContainer(controller, self.zoom);
-      console.log(CPlayer);
-      CPlayer.on('initialize', () => {console.log(111)});
+      CPlayer.on('initialize', self.initialize.bind(self));
       
       // controller.getModels('players', 'player').then(([players, player]) => {
       //   // 设置本身
@@ -61,8 +60,12 @@ export default class Zoom extends React.Component<{}, IZoomState> {
     this.client = client;
   }
   initialize(callback?: () => void) {
+    let initialized = true;
+    Object.keys(this.containers).map((k) => {
+      initialized = initialized && this.containers[k].initialized;
+    })
     this.setState({
-      initialized: true
+      initialized: initialized
     }, callback);
   }
   updateMouses(mouses?: PlayerMap, callback?: () => void) {
