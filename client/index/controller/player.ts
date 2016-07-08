@@ -14,8 +14,7 @@ export default class PlayerControllerContainer extends ControllerContainer {
     controller.getModels('players', 'player')
       .then(([players, player]) => {
         // set character
-        self.character = new CharacterGameComponent(player, zoom);
-        self.addComponent(player.data._id, self.character);
+        self.initCharacter(player, zoom);
         // set other players
         Object.keys(players.data).map((k) => {
           if (k != self.character.id.toString()) {
@@ -24,8 +23,15 @@ export default class PlayerControllerContainer extends ControllerContainer {
           }
         });
 
+        this.character.fire('move', 100, 200);
         self.fire('initialize');
       })
+  }
+
+  initCharacter(player, zoom) {
+    let character = new CharacterGameComponent(player, zoom);
+    this.character = character;
+    this.addComponent(player.data._id, this.character);
   }
 
 

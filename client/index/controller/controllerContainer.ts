@@ -1,20 +1,17 @@
 import {Broker} from 'corona-client'
 import GameComponent from './../gameComponent/gameComponent'
-import {IEventHandler, Events} from './../utils/IEventHandler'
+import { EventHandler} from './../utils/EventHandler'
 
-export default class ControllerContainer implements IEventHandler {
+export default class ControllerContainer extends EventHandler {
   name = ''
   initialized = false;
-  events: {
-    [key: string]: Function[]
-  } = {}
 
   components: {
     [key: string]: GameComponent
   } = {}
 
   constructor(protected controller: Broker, protected zoom: HTMLDivElement) {
-
+    super();
   }
 
   addComponent(key: string, comp: GameComponent) {
@@ -34,16 +31,4 @@ export default class ControllerContainer implements IEventHandler {
     }
   }
 
-  // events
-  @Events('initialize')
-  on(eventName: string, callback: Function) {
-    this.events[eventName].push(callback);
-  }
-
-  @Events('initialize')
-  fire(eventName: string, ...args) {
-    for (var i = 0; i < this.events[eventName].length; i++) {
-      this.events[eventName][i](...args);
-    }
-  }
 }
