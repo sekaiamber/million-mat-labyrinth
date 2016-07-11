@@ -1,14 +1,21 @@
 import PlayerGameComponent from './player'
+import * as $ from 'jquery'
 
 export default class CharacterGameComponent extends PlayerGameComponent {
   name = 'character'
 
   constructor(model, zoom) {
     super(model, zoom);
-    this.on('move', this.move.bind(this));
+    // 绑定动作
+    this.on('move', this.updatePosition.bind(this));
+    // 初始化
+    this._init();
   }
 
-  move(x: number, y: number) {
-    this.updatePosition(x, y);
+  private _init() {
+    let self = this;
+    $(this.zoom).mousemove((e) => {
+      self.fire('move', e.pageX, e.pageY);
+    });
   }
 }

@@ -77,7 +77,7 @@ export default class Zoom extends React.Component<{}, IZoomState> {
   handleMouseMove(e: React.MouseEvent) {
     if (this.state.initialized) {
       // TODO 向Corona更新自身位置
-      this.controller.updatePosition(e.pageX, e.pageY);
+      // this.controller.updatePosition(e.pageX, e.pageY);
     }
   }
   render() {
