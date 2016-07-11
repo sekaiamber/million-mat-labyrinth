@@ -5,10 +5,12 @@ import CharacterGameComponent from './../gameComponent/character'
 import {IPlayerController} from './../../../interface/IPlayerController'
 
 export default class PlayerControllerContainer extends ControllerContainer {
+  // base infor
   name = 'player'
+  // private members
   character: CharacterGameComponent
 
-  constructor(controller, zoom: HTMLDivElement) {
+  constructor(protected controller: IPlayerController, zoom: HTMLDivElement) {
     super(controller, zoom);
     let self = this;
     controller.getModels('players', 'player')
@@ -23,7 +25,6 @@ export default class PlayerControllerContainer extends ControllerContainer {
           }
         });
 
-        this.character.fire('move', 100, 200);
         self.fire('initialize');
       })
   }
@@ -32,6 +33,8 @@ export default class PlayerControllerContainer extends ControllerContainer {
     let character = new CharacterGameComponent(player, zoom);
     this.character = character;
     this.addComponent(player.data._id, this.character);
+    // 绑定移动
+    this.character.on('move', this.controller.updatePosition);
   }
 
 
