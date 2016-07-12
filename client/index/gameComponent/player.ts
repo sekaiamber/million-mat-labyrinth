@@ -7,6 +7,10 @@ export default class PlayerGameComponent extends GameComponent {
   name = 'player'
   id: number
   dom: JQuery
+  position = {
+    x: 0,
+    y: 0,
+  }
 
   constructor(model: ModelProxy, zoom: HTMLDivElement) {
     super(model, zoom);
@@ -19,10 +23,16 @@ export default class PlayerGameComponent extends GameComponent {
   }
 
   updatePosition(x: number, y: number) {
+    this.position.x = x;
+    this.position.y = y;
     this.dom.css({
       top: y,
       left: x
     });
+  }
+
+  updatePositionBy(offestX: number, offsetY: number) {
+    this.updatePosition(this.position.x + offestX, this.position.y + offsetY);
   }
 
   getDom(data: IPlayer) {
