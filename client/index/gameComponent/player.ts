@@ -16,13 +16,18 @@ export default class PlayerGameComponent extends GameComponent {
     super(model, zoom);
     this.id = model.data._id;
     let dom = this.getDom(model.data);
+    // init data
+    this.updatePosition();
     $(zoom).append(dom);
     // initialized
     this.initialized = true;
     this.fire('initialize');
   }
 
-  updatePosition(x: number, y: number) {
+  updatePosition(
+    x: number = this.model.data.position.x,
+    y: number = this.model.data.position.y
+  ) {
     this.position.x = x;
     this.position.y = y;
     this.dom.css({
@@ -42,5 +47,10 @@ export default class PlayerGameComponent extends GameComponent {
     let dom = $('<div class="mouse iconfont icon-shubiao"></div>');
     this.dom = dom;
     return dom;
+  }
+
+  destroy() {
+    super.destroy();
+    this.dom.remove();
   }
 }

@@ -9,4 +9,8 @@ export default class GameComponent extends EventHandler {
     super()
   }
 
+  destroy() {
+    this.fire('destroy');
+  }
+
 }

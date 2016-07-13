@@ -19,6 +19,14 @@ export default class ControllerContainer extends EventHandler {
     comp.on('initialize', this.handleInitialize);
   }
 
+  removeComponent(key: string) {
+    if (this.components[key]) {
+      let comp = this.components[key];
+      comp.destroy();
+      delete this.components[key];
+    }
+  }
+
   // initialize
   protected handleInitialize() {
     let self = this;
