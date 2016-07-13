@@ -53,9 +53,14 @@ export default class PlayerControllerContainer extends ControllerContainer {
     // 新增玩家
     players.on('add', (id) => {
       players.getModel(id.toString()).then((model) => {
-        let p = new PlayerGameComponent(model, zoom);
-        self.addComponent(id, p);
-        self.players[id] = p;
+        if (self.components[id]) {
+          let p = self.components[id];
+          p.updateModel(model);
+        } else {
+          let p = new PlayerGameComponent(model, zoom);
+          self.addComponent(id, p);
+          self.players[id] = p;
+        }
       })
     });
     // 删除玩家

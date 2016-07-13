@@ -9,6 +9,10 @@ export default class GameComponent extends EventHandler {
     super()
   }
 
+  updateModel(model: ModelProxy) {
+    this.model = model;
+  }
+
   destroy() {
     this.fire('destroy');
   }
