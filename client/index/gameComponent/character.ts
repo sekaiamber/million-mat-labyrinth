@@ -13,6 +13,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
     39: { name: 'Right', vector: [1, 0], active: false },
     40: { name: 'Down', vector: [0, 1], active: false },
   }
+  
   move() {
     if (this.moving) {
       this.updatePositionBy(this.movingVector[0] * this.speed, this.movingVector[1] * this.speed);
@@ -36,7 +37,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
     // start move
     $(window).keydown((e) => {
       let direction = this.moveDirection[e.which];
-      if (!direction.active) {
+      if (direction && !direction.active) {
         direction.active = true;
         let vector = direction.vector;
         this.movingVector[0] += vector[0];
@@ -50,7 +51,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
     // stop move
     $(window).keyup((e) => {
       let direction = this.moveDirection[e.which];
-      if (direction.active) {
+      if (direction && direction.active) {
         direction.active = false;
         let vector = direction.vector;
         this.movingVector[0] -= vector[0];
@@ -60,6 +61,6 @@ export default class CharacterGameComponent extends PlayerGameComponent {
         }
       }
     });
-
+    
   }
 }
