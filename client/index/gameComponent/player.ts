@@ -24,15 +24,50 @@ export default class PlayerGameComponent extends GameComponent {
     this.fire('initialize');
   }
 
+  protected deg_v1 = 0
+  protected deg_v2 = 0
+  protected deg = 0
+  updateDegree(v1: number, v2: number) {
+    if (this.deg_v1 == v1 && this.deg_v2 == v2) {
+      return;
+    } else {
+      this.deg_v1 = v1;
+      this.deg_v2 = v2;
+    }
+    let deg = -1;
+    if (v1 == 0 && v2 == -1) { deg = 0; }
+    else if (v1 == 1 && v2 == -1) { deg = 45; }
+    else if (v1 == 1 && v2 == 0) { deg = 90; }
+    else if (v1 == 1 && v2 == 1) { deg = 135; }
+    else if (v1 == 0 && v2 == 1) { deg = 180; }
+    else if (v1 == -1 && v2 == 1) { deg = 225; }
+    else if (v1 == -1 && v2 == 0) { deg = 270; }
+    else if (v1 == -1 && v2 == -1) { deg = 315; }
+    if (deg == -1) return;
+    let selfdeg = this.deg % 360;
+    let diff = Math.abs(selfdeg - deg);
+    if (diff <= 180) {
+      this.deg = this.deg + (deg - selfdeg);
+    } else {
+      if (deg > selfdeg) {
+        this.deg = this.deg + (deg - 360 - selfdeg);
+      } else {
+        this.deg = this.deg + (deg + 360 - selfdeg);
+      }
+    }
+  }
+
   updatePosition(
     x: number = this.model.data.position.x,
     y: number = this.model.data.position.y
   ) {
+    this.updateDegree(x - this.position.x, y - this.position.y);
     this.position.x = x;
     this.position.y = y;
     this.dom.css({
       top: y,
-      left: x
+      left: x,
+      transform: `rotateZ(${this.deg}deg)`
     });
   }
 
@@ -44,7 +79,7 @@ export default class PlayerGameComponent extends GameComponent {
     if (this.dom) {
       return this.dom
     }
-    let dom = $('<div class="mouse iconfont icon-shubiao"></div>');
+    let dom = $('<div class="mouse iconfont icon-player"></div>');
     this.dom = dom;
     return dom;
   }
