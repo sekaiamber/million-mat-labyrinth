@@ -1,0 +1,32 @@
+body {
+  background: #fff;
+  overflow: hidden;
+}
+html, body, #main,
+{
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+#camera {
+  height: 0;
+  width: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  // camera
+  transform-origin: left top 0px;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) scale(1);
+  transition: all 1000ms ease-in-out;
+
+  .place {
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
