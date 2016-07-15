@@ -1,13 +1,11 @@
-.mouse-pool {
+.space {
   height: 100%;
   width: 100%;
   position: relative;
-  .mouse-pool-test {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-  }
-  .mouse {
+  transform-origin: left top 0px;
+  transform-style: preserve-3d;
+  // transform: rotateZ(0deg) rotateY(0deg) rotateX(0deg) translate3d(-450px, -1620px, -2000px);
+  .player {
     position: absolute;
     height: 18px;
     width: 18px;

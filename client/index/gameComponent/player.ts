@@ -79,8 +79,9 @@ export default class PlayerGameComponent extends GameComponent {
     if (this.dom) {
       return this.dom
     }
-    let dom = $('<div class="mouse iconfont icon-player"></div>');
+    let dom = $('<div class="player iconfont icon-player"></div>');
     this.dom = dom;
+    dom.css('color', data.color);
     return dom;
   }
 

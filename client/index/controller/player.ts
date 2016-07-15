@@ -32,7 +32,19 @@ export default class PlayerControllerContainer extends ControllerContainer {
     this.character = character;
     this.addComponent(player.data._id, this.character);
     // 绑定移动
-    this.character.on('move', this.controller.updatePosition);
+    this.character.on('move', (x, y, p) => {
+      this.controller.updatePosition(x, y)
+      this.fire('characterMove', p)
+    });
+    this.character.on('startMove', (p) => {
+      this.fire('characterStartMove', p);
+    });
+    this.character.on('finishMove', (p) => {
+      this.fire('characterFinishMove', p);
+    });
+    this.character.on('changeDirection', (p) => {
+      this.fire('characterChangeDirection', p);
+    })
   }
 
   initPlayers(players, zoom) {

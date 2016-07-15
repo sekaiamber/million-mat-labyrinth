@@ -29,7 +29,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
 
   updatePosition(x: number, y: number) {
     super.updatePosition(x, y);
-    this.fire('move', x, y);
+    this.fire('move', x, y, this);
   }
 
   private _init() {
@@ -44,8 +44,10 @@ export default class CharacterGameComponent extends PlayerGameComponent {
         this.movingVector[1] += vector[1];
         if (!this.moving) {
           this.moving = true;
+          this.fire('startMove', this);
           this.move();
         }
+        this.fire('changeDirection', this);
       }
     });
     // stop move
@@ -58,6 +60,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
         this.movingVector[1] -= vector[1];
         if (this.movingVector[0] == 0 && this.movingVector[1] == 0) {
           this.moving = false;
+          this.fire('finishMove', this);
         }
       }
     });
