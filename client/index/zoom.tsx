@@ -18,6 +18,7 @@ interface IZoomState extends IReactComponentsState {
 }
 
 interface IZoomProps {
+  console: React.Component<Object, Object>
   // camera
   cameraMove?: (player: CharacterGameComponent, zoom: Zoom) => void
   cameraStartMove?: (player: CharacterGameComponent, zoom: Zoom) => void
@@ -34,7 +35,7 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> implem
     [id: string]: ControllerContainer
   }
   
-  constructor(props: {}, context?: any) {
+  constructor(props, context?: any) {
     super(props, context);
     this.containers = {};
     this.state = {
@@ -50,6 +51,10 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> implem
     let CPlayer = new PlayerControllerContainer(controller, this.zoom);
     CPlayer.on('initialize', () => {
       let initialized = true;
+      // console
+      self.updateConsole({
+        name: CPlayer.character.model.data.name
+      });
       Object.keys(self.containers).map((k) => {
         initialized = initialized && self.containers[k].initialized;
       });
@@ -69,6 +74,10 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> implem
     CPlayer.on('characterFinishMove', this.characterFinishMove.bind(this));
     CPlayer.on('characterChangeDirection', this.characterChangeDirection.bind(this));
     this.controller = controller;
+  }
+  // console
+  updateConsole(state) {
+    this.props.console.setState(state);
   }
   // move
   characterMove(player: CharacterGameComponent) {

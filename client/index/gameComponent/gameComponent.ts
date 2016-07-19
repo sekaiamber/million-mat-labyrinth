@@ -5,7 +5,7 @@ export default class GameComponent extends EventHandler {
   name = ''
   initialized = false;
 
-  constructor(protected model: ModelProxy, protected zoom: HTMLDivElement) {
+  constructor(public model: ModelProxy, public zoom: HTMLDivElement) {
     super()
   }
 

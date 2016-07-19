@@ -4,5 +4,6 @@ export interface IPlayer {
         y: number
     },
     color: string,
-    _id?: number
+    _id?: number,
+    name: string,
 }

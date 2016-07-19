@@ -6,7 +6,9 @@ import {IPlayer} from './../../../interface/IPlayer'
 export default class PlayerGameComponent extends GameComponent {
   name = 'player'
   id: number
-  dom: JQuery
+  $dom: JQuery
+  $player: JQuery
+  $name: JQuery
   position = {
     x: 0,
     y: 0,
@@ -18,6 +20,7 @@ export default class PlayerGameComponent extends GameComponent {
     let dom = this.getDom(model.data);
     // init data
     this.updatePosition();
+    this.updateName();
     $(zoom).append(dom);
     // initialized
     this.initialized = true;
@@ -64,29 +67,40 @@ export default class PlayerGameComponent extends GameComponent {
     this.updateDegree(x - this.position.x, y - this.position.y);
     this.position.x = x;
     this.position.y = y;
-    this.dom.css({
+    this.$dom.css({
       top: y,
       left: x,
-      transform: `rotateZ(${this.deg}deg)`
     });
+    this.$player.css({
+      transform: `rotateZ(${this.deg}deg)`
+    })
   }
 
   updatePositionBy(offestX: number, offsetY: number) {
     this.updatePosition(this.position.x + offestX, this.position.y + offsetY);
   }
 
+  updateName(name: string = this.model.data.name) {
+    this.$name.html(name);
+  }
+
   getDom(data: IPlayer) {
-    if (this.dom) {
-      return this.dom
+    if (this.$dom) {
+      return this.$dom
     }
-    let dom = $('<div class="player iconfont icon-player"></div>');
-    this.dom = dom;
-    dom.css('color', data.color);
+    let dom = $('<div class="player"></div>');
+    let player = $('<div class="obj iconfont icon-player"></div>');
+    let name = $('<div class="player-name"></div>')
+    dom.append(player).append(name);
+    this.$dom = dom;
+    this.$player = player;
+    this.$name = name;
+    player.css('color', data.color);
     return dom;
   }
 
   destroy() {
     super.destroy();
-    this.dom.remove();
+    this.$dom.remove();
   }
 }

@@ -23,7 +23,7 @@ export default class PlayerControllerContainer extends ControllerContainer {
         // set other players
         self.initPlayers(players, zoom);
 
-        self.fire('initialize');
+        self.fire('initialize', self);
       })
   }
 

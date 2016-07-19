@@ -1,7 +1,7 @@
 import {Controller} from 'corona'
 import {Player, PlayerRepository} from './../models/player'
 import {IPlayerController} from './../../interface/IPlayerController'
-import {ExposedMethod} from './../utils/utils';
+import {ExposedMethod, RandomName} from './../utils/utils';
 
 var playerRepo: PlayerRepository = new PlayerRepository(Player);
 var players = playerRepo.toModel();
@@ -13,7 +13,8 @@ export class PlayerController extends Controller implements IPlayerController {
     init(params, done) {
         return playerRepo.create({
             position: { x: 0, y: 0},
-            color: `rgb(${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())})`
+            color: `rgb(${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())})`,
+            name: RandomName()
         }).then((player) => {
             this.player = player;
             this.players = players;
@@ -28,6 +29,11 @@ export class PlayerController extends Controller implements IPlayerController {
     updatePosition(x, y) {
         this.player.set('position.x', x)
         this.player.set('position.y', y);
+    }
+
+    @ExposedMethod
+    updateName(name) {
+        this.player.set('name', name);
     }
 
     onexit() {
