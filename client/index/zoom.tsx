@@ -4,6 +4,7 @@ import {IPlayer} from './../../interface/IPlayer'
 import PlayerControllerContainer from './controller/player'
 import ControllerContainer from './controller/controllerContainer'
 import CharacterGameComponent from './gameComponent/character'
+import {IReactComponents, IReactComponentsState} from './IReactComponents'
 
 require('./zoom.scss');
 
@@ -11,9 +12,8 @@ type PlayerMap = {
   [id: string]: IPlayer
 }
 
-interface IZoomState {
+interface IZoomState extends IReactComponentsState {
   players?: PlayerMap,
-  initialized?: boolean,
   camera?: string
 }
 
@@ -25,9 +25,8 @@ interface IZoomProps {
   cameraChangeDirection?: (player: CharacterGameComponent, zoom: Zoom) => void
 }
 
-export default class Zoom extends React.Component<IZoomProps, IZoomState> {
+export default class Zoom extends React.Component<IZoomProps, IZoomState> implements IReactComponents {
   // Corona Client
-  client: Client
   controller
 
   zoom: HTMLDivElement
@@ -45,28 +44,31 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> {
     };
   }
   componentDidMount() {
-    var self = this;
-    // 链接Corona
-    var client = new Client('/players', function (controller) {
-      let CPlayer = new PlayerControllerContainer(controller, self.zoom);
-      CPlayer.on('initialize', self.initialize.bind(self));
-      // move
-      CPlayer.on('characterMove', self.characterMove.bind(self));
-      CPlayer.on('characterStartMove', self.characterStartMove.bind(self));
-      CPlayer.on('characterFinishMove', self.characterFinishMove.bind(self));
-      CPlayer.on('characterChangeDirection', self.characterChangeDirection.bind(self));
-      self.controller = controller;
-    });
-    this.client = client;
   }
-  initialize(callback?: () => void) {
-    let initialized = true;
-    Object.keys(this.containers).map((k) => {
-      initialized = initialized && this.containers[k].initialized;
-    })
-    this.setState({
-      initialized: initialized
-    }, callback);
+  initialize(controller, callback?: () => void) {
+    let self = this;
+    let CPlayer = new PlayerControllerContainer(controller, this.zoom);
+    CPlayer.on('initialize', () => {
+      let initialized = true;
+      Object.keys(self.containers).map((k) => {
+        initialized = initialized && self.containers[k].initialized;
+      });
+      if (initialized) {
+        self.setState({
+          initialized: initialized
+        }, callback);
+      } else {
+        self.setState({
+          initialized: initialized
+        });
+      }
+    });
+    // move
+    CPlayer.on('characterMove', this.characterMove.bind(this));
+    CPlayer.on('characterStartMove', this.characterStartMove.bind(this));
+    CPlayer.on('characterFinishMove', this.characterFinishMove.bind(this));
+    CPlayer.on('characterChangeDirection', this.characterChangeDirection.bind(this));
+    this.controller = controller;
   }
   // move
   characterMove(player: CharacterGameComponent) {
