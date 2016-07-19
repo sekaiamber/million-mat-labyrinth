@@ -44,6 +44,12 @@ export default class PlayerControllerContainer extends ControllerContainer {
     });
     this.character.on('changeDirection', (p) => {
       this.fire('characterChangeDirection', p);
+    });
+
+    // 绑定喊话
+    this.character.on('say', (msg) => {
+      this.controller.say(msg);
+      this.fire('characterSay', msg);
     })
   }
 
@@ -56,10 +62,14 @@ export default class PlayerControllerContainer extends ControllerContainer {
       }
     });
     let self = this;
-    // 绑定移动
-    players.on('*.change', (id) => {
+    players.on('*.change', (id, key: string) => {
       if (self.players[id]) {
-        self.players[id].updatePosition();
+        // 绑定移动
+        if (key.indexOf('position') == 0) {
+          self.players[id].updatePosition();
+        } else if (key.indexOf('say') == 0) {
+          self.players[id].saying();
+        }
       }
     });
     // 新增玩家
@@ -73,7 +83,7 @@ export default class PlayerControllerContainer extends ControllerContainer {
           self.addComponent(id, p);
           self.players[id] = p;
         }
-      })
+      });
     });
     // 删除玩家
     players.on('remove', (id) => {

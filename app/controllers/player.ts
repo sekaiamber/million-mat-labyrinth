@@ -14,7 +14,11 @@ export class PlayerController extends Controller implements IPlayerController {
         return playerRepo.create({
             position: { x: 0, y: 0},
             color: `rgb(${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())},${parseInt((Math.random() * 255).toString())})`,
-            name: RandomName()
+            name: RandomName(),
+            say: {
+                message: '',
+                time: null
+            }
         }).then((player) => {
             this.player = player;
             this.players = players;
@@ -34,6 +38,15 @@ export class PlayerController extends Controller implements IPlayerController {
     @ExposedMethod
     updateName(name) {
         this.player.set('name', name);
+    }
+
+    @ExposedMethod
+    say(message: string, to?: number) {
+        this.player.set('say', {
+            message: message,
+            time: (new Date()).getTime(),
+            to: to
+        });
     }
 
     onexit() {

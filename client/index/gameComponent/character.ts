@@ -3,6 +3,12 @@ import * as $ from 'jquery'
 
 export default class CharacterGameComponent extends PlayerGameComponent {
   name = 'character'
+  $say: JQuery
+  $input: JQuery
+
+  // controll
+  lock = false;
+
   // moving
   speed = 1
   moving = false
@@ -15,7 +21,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
   }
   
   move() {
-    if (this.moving) {
+    if (!this.lock && this.moving) {
       this.updatePositionBy(this.movingVector[0] * this.speed, this.movingVector[1] * this.speed);
       window.requestAnimationFrame((() => { this.move() }).bind(this))
     }
@@ -32,10 +38,26 @@ export default class CharacterGameComponent extends PlayerGameComponent {
     this.fire('move', x, y, this);
   }
 
+  stopMoving() {
+    Object.keys(this.moveDirection).map((e) => {
+      this.moveDirection[e].active = false;
+      this.movingVector[0] = 0;
+      this.movingVector[1] = 0;
+      this.moving = false;
+      this.fire('finishMove', this);
+    })
+  }
+
   private _init() {
     let self = this;
+    // dom
+    let say = $('<div class="say hidden"><input /></div>');
+    this.$dom.append(say);
+    this.$say = say;
+    this.$input = $('input', say);
     // start move
     $(window).keydown((e) => {
+      if (this.lock) return;
       let direction = this.moveDirection[e.which];
       if (direction && !direction.active) {
         direction.active = true;
@@ -52,6 +74,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
     });
     // stop move
     $(window).keyup((e) => {
+      if (this.lock) return;
       let direction = this.moveDirection[e.which];
       if (direction && direction.active) {
         direction.active = false;
@@ -64,6 +87,26 @@ export default class CharacterGameComponent extends PlayerGameComponent {
         }
       }
     });
-    
+    // say
+    $(window).keypress((e) => {
+      if (e.which == 13) {
+        this.lock = !this.lock;
+        if (this.lock) {
+          // say
+          this.stopMoving();
+          this.$input.val('');
+          this.$say.removeClass('hidden');
+          this.$input.focus();
+        } else {
+          // move
+          let msg: string = this.$input.val();
+          if (msg.length != 0) {
+            this.saying(msg, (new Date()).getTime());
+            this.fire('say', msg);
+          }
+          this.$say.addClass('hidden');
+        }
+      }
+    })
   }
 }

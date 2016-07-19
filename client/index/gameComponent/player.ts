@@ -9,6 +9,7 @@ export default class PlayerGameComponent extends GameComponent {
   $dom: JQuery
   $player: JQuery
   $name: JQuery
+  $messageBox: JQuery
   position = {
     x: 0,
     y: 0,
@@ -84,17 +85,34 @@ export default class PlayerGameComponent extends GameComponent {
     this.$name.html(name);
   }
 
+  saying(
+    message: string = this.model.data.say.message,
+    time: number = this.model.data.say.time,
+    to: number = this.model.data.say.to
+  ) {
+    if ($(`.player-message[ts=${time}]`, this.$messageBox).length > 0) {
+      return;
+    } 
+    let $msg = $(`<div class="player-message" ts="${time}">${message}</div>`);
+    this.$messageBox.append($msg);
+    setTimeout(() => {
+      $msg.remove();
+    }, 4000);
+  }
+
   getDom(data: IPlayer) {
     if (this.$dom) {
       return this.$dom
     }
     let dom = $('<div class="player"></div>');
     let player = $('<div class="obj iconfont icon-player"></div>');
-    let name = $('<div class="player-name"></div>')
-    dom.append(player).append(name);
+    let name = $('<div class="player-name"></div>');
+    let msgbox = $('<div class="player-messagebox"></div>');
+    dom.append(player).append(name).append(msgbox);
     this.$dom = dom;
     this.$player = player;
     this.$name = name;
+    this.$messageBox = msgbox;
     player.css('color', data.color);
     return dom;
   }

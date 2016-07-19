@@ -5,7 +5,7 @@ import express = require('express')
 import repl = require("repl");
 var app = express();
 var server = http.createServer(app);
-server.listen(8080);
+server.listen(8080, '0.0.0.0');
 app.use(express.static('public'));
 
 var coronaServer = new Server(controllers, server);
