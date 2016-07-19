@@ -1,3 +1,9 @@
+type Say = {
+    message: string,
+    time: number,
+    to?: number
+}
+
 export interface IPlayer {
     position: {
         x: number,
@@ -6,4 +12,5 @@ export interface IPlayer {
     color: string,
     _id?: number,
     name: string,
+    say: Say
 }

@@ -21,8 +21,48 @@
       position: absolute;
       bottom: 25px;
       width: 150px;
-      left: -67px;
+      left: -66px;
       text-align: center;
+    }
+    .say {
+      position: absolute;
+      border: solid 1px #000;
+      border-radius: 5px;
+      padding: 5px;
+      left: -91px;
+      bottom: -45px;
+      background: #fff;
+      height: 25px;
+      width: 200px;
+      z-index: 100;
+
+      &.hidden {
+        display: none;
+      }
+
+      input {
+        padding: 0;
+        height: 100%;
+        border: 0;
+        width: 100%;
+        outline: none;
+      }
+    }
+    .player-messagebox {
+      position: absolute;
+      bottom: 41px;
+      width: 200px;
+      left: -60px;
+
+      .player-message {
+        border: solid 1px #000;
+        border-radius: 5px;
+        padding: 5px;
+        background: #fff;
+        float: left;
+        clear: both;
+        margin-bottom: 10px;
+      }
     }
   }
 }
