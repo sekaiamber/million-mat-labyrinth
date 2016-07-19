@@ -11,7 +11,19 @@
     width: 18px;
     line-height: 18px;
     font-size: 18px;
-    transition: transform linear 100ms;
+    .obj {
+      height: 18px;
+      width: 18px;
+      line-height: 18px;
+      transition: transform linear 100ms;
+    }
+    .player-name {
+      position: absolute;
+      bottom: 25px;
+      width: 150px;
+      left: -67px;
+      text-align: center;
+    }
   }
 }
 
