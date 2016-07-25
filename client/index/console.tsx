@@ -11,10 +11,19 @@ interface IConsoleProps {
 
 interface IConsoleState extends IReactComponentsState {
   name?: string,
-  position: {
+  position?: {
     x: number,
     y: number
   }
+  history?: IHistory[]
+}
+
+export interface IHistory {
+  time: Date,
+  event: string,
+  key: string,
+  content: string,
+  who: string,
 }
 
 export default class Console extends React.Component<IConsoleProps, IConsoleState> implements IReactComponents {
@@ -31,7 +40,8 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
       position: {
         x: 0,
         y: 0
-      }
+      },
+      history: []
     }
   }
 
@@ -40,11 +50,34 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
   componentDidMount() {
   }
 
+  addHistory(history: IHistory) {
+    let s = this.state.history;
+    s.push(history);
+    this.setState({
+      history: s
+    })
+  }
+
+  timeFormat(date: Date) {
+    let h = `${date.getHours()}`;
+    let m = `${date.getMinutes()}`;
+    let s = `${date.getSeconds()}`;
+    h = (h.length == 1 ? '0' : '') + h;
+    m = (m.length == 1 ? '0' : '') + m;
+    s = (s.length == 1 ? '0' : '') + s;
+    return `${h}:${m}:${s}`
+  }
+
   render() {
     return (
       <div id="console">
-        <div className="name">{this.state.name}</div>
-        <div className="position">x: {this.state.position.x} y: {this.state.position.y}</div>
+        <div className="name">欢迎你：{this.state.name}</div>
+        <div className="position" style={{display: 'none'}}>x: {this.state.position.x} y: {this.state.position.y}</div>
+        <div className="history">{
+          this.state.history.map((v, i) => (
+            <div key={i} className={v.key}><span className="time">[{this.timeFormat(v.time)}]</span><span className="event">[{v.event}]</span><span className="who">[{v.who}]</span><span className="content">{v.content}</span></div>
+          ))
+        }</div>
       </div>
     );
   }

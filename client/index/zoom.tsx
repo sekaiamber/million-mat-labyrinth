@@ -2,9 +2,11 @@ import * as React from "react"
 import {Client} from 'corona-client'
 import {IPlayer} from './../../interface/IPlayer'
 import PlayerControllerContainer from './controller/player'
+import PlayerGameComponent from './gameComponent/player'
 import ControllerContainer from './controller/controllerContainer'
 import CharacterGameComponent from './gameComponent/character'
 import {IReactComponents, IReactComponentsState} from './IReactComponents'
+import Console from './console'
 
 require('./zoom.scss');
 
@@ -18,7 +20,7 @@ interface IZoomState extends IReactComponentsState {
 }
 
 interface IZoomProps {
-  console: React.Component<Object, Object>
+  console: Console
   // camera
   cameraMove?: (player: CharacterGameComponent, zoom: Zoom) => void
   cameraStartMove?: (player: CharacterGameComponent, zoom: Zoom) => void
@@ -73,6 +75,9 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> implem
     CPlayer.on('characterStartMove', this.characterStartMove.bind(this));
     CPlayer.on('characterFinishMove', this.characterFinishMove.bind(this));
     CPlayer.on('characterChangeDirection', this.characterChangeDirection.bind(this));
+    // say
+    CPlayer.on('characterSay', this.characterSay.bind(this));
+    CPlayer.on('playerSay', this.playerSay.bind(this));
     this.controller = controller;
   }
   // console
@@ -91,6 +96,25 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> implem
   }
   characterChangeDirection(player: CharacterGameComponent) {
     this.props.cameraChangeDirection(player, this);
+  }
+  // say
+  characterSay(msg) {
+    this.props.console.addHistory({
+      time: new Date(),
+      event: '房间',
+      key: 'say character',
+      content: msg,
+      who: '你',
+    });
+  }
+  playerSay(player: PlayerGameComponent, msg) {
+    this.props.console.addHistory({
+      time: new Date(player.model.data.say.time),
+      event: '房间',
+      key: 'say player',
+      content: msg,
+      who: player.model.data.name,
+    });
   }
   render() {
     return (
