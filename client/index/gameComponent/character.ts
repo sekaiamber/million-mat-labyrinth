@@ -102,7 +102,6 @@ export default class CharacterGameComponent extends PlayerGameComponent {
           let msg: string = this.$input.val();
           if (msg.length != 0) {
             this.saying(msg, (new Date()).getTime());
-            this.fire('say', msg);
           }
           this.$say.addClass('hidden');
         }

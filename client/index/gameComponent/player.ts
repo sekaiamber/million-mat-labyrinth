@@ -95,6 +95,7 @@ export default class PlayerGameComponent extends GameComponent {
     } 
     let $msg = $(`<div class="player-message" ts="${time}">${message}</div>`);
     this.$messageBox.append($msg);
+    this.fire('say', message);
     setTimeout(() => {
       $msg.remove();
     }, 4000);

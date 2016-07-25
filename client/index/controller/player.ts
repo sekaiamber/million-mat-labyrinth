@@ -56,9 +56,7 @@ export default class PlayerControllerContainer extends ControllerContainer {
   initPlayers(players, zoom) {
     Object.keys(players.data).map((k) => {
       if (k != this.character.id.toString()) {
-        let p = new PlayerGameComponent(players.data[k], zoom);
-        this.addComponent(k, p);
-        this.players[k] = p;
+        this.initNewPlayer(k, players.data[k], zoom);
       }
     });
     let self = this;
@@ -79,9 +77,7 @@ export default class PlayerControllerContainer extends ControllerContainer {
           let p = self.components[id];
           p.updateModel(model);
         } else {
-          let p = new PlayerGameComponent(model, zoom);
-          self.addComponent(id, p);
-          self.players[id] = p;
+          self.initNewPlayer(id, model, zoom);
         }
       });
     });
@@ -90,6 +86,16 @@ export default class PlayerControllerContainer extends ControllerContainer {
       self.removeComponent(id);
     });
 
+  }
+
+  initNewPlayer(id, model, zoom) {
+    let self = this;
+    let p = new PlayerGameComponent(model, zoom);
+    p.on('say', (msg) => {
+      self.fire('playerSay', p, msg);
+    })
+    this.addComponent(id, p);
+    this.players[id] = p;
   }
 
 
