@@ -78,6 +78,9 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> implem
     // say
     CPlayer.on('characterSay', this.characterSay.bind(this));
     CPlayer.on('playerSay', this.playerSay.bind(this));
+    // player
+    CPlayer.on('playerEnterRoom', this.playerEnterRoom.bind(this));
+    CPlayer.on('playerLeaveRoom', this.playerLeaveRoom.bind(this));
     this.controller = controller;
   }
   // console
@@ -114,6 +117,25 @@ export default class Zoom extends React.Component<IZoomProps, IZoomState> implem
       key: 'say player',
       content: msg,
       who: player.model.data.name,
+    });
+  }
+  // player
+  playerEnterRoom(player: PlayerGameComponent) {
+    this.props.console.addHistory({
+      time: new Date(),
+      event: '系统',
+      key: 'system info',
+      content: `${player.model.data.name} 进入了房间`,
+      who: '消息',
+    });
+  }
+  playerLeaveRoom(player: PlayerGameComponent) {
+    this.props.console.addHistory({
+      time: new Date(),
+      event: '系统',
+      key: 'system info',
+      content: `${player.model.data.name} 离开了房间`,
+      who: '消息',
     });
   }
   render() {

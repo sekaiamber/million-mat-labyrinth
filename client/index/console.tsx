@@ -118,7 +118,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
       <div className={classes} onMouseEnter={() => this.setState({hover: true})} onMouseLeave={() => this.setState({hover: false})} ref={(c) => this.dom = c}>
         <div className="container">{
           this.props.data.map((v, i) => (
-            <div key={i} className={v.key}><span className="time">[{this.timeFormat(v.time) }]</span><span className="event">[{v.event}]</span><span className="who">[{v.who}]</span><span className="content">{v.content}</span></div>
+            <div key={i} className={'message ' + v.key}><span className="time">[{this.timeFormat(v.time) }]</span><span className="event">[{v.event}]</span><span className="who">[{v.who}]</span><span className="content">{v.content}</span></div>
           ))
         }
         </div>

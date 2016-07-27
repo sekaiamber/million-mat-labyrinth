@@ -77,13 +77,16 @@ export default class PlayerControllerContainer extends ControllerContainer {
           let p = self.components[id];
           p.updateModel(model);
         } else {
-          self.initNewPlayer(id, model, zoom);
+          let p = self.initNewPlayer(id, model, zoom);
+          self.fire('playerEnterRoom', p);
         }
       });
     });
     // 删除玩家
     players.on('remove', (id) => {
-      self.removeComponent(id);
+      self.removeComponent(id, (comp) => {
+        self.fire('playerLeaveRoom', comp);
+      });
     });
 
   }
@@ -96,6 +99,7 @@ export default class PlayerControllerContainer extends ControllerContainer {
     })
     this.addComponent(id, p);
     this.players[id] = p;
+    return p;
   }
 
 

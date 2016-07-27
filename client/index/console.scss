@@ -50,18 +50,24 @@ $historyWidth: 350px;
       padding: 10px;
       box-sizing: border-box;
       
-      .say {
-        color: #009688;
-        &.character {
-          color: #8BC34A;
-        }
-
+      .message {
         .time,
         .event,
         .who {
           font-weight: bold;
         }
+        
+        &.say {
+          color: #009688;
+          &.character {
+            color: #8BC34A;
+          }
+        }
+        &.system {
+          color: #FF9800;
+        }
       }
+
     }
 
     &.hover {
