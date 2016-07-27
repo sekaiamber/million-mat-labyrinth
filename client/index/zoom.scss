@@ -23,6 +23,7 @@
       width: 150px;
       left: -66px;
       text-align: center;
+      z-index: 9999;
     }
     .say {
       position: absolute;
@@ -53,6 +54,7 @@
       bottom: 41px;
       width: 200px;
       left: -60px;
+      z-index: 99999;
 
       .player-message {
         border: solid 1px #000;
