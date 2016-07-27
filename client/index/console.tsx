@@ -45,7 +45,7 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
     }
   }
 
-  initialize(controller, callback?: () => void) {}
+  initialize(controller, callback?: () => void) { }
 
   componentDidMount() {
   }
@@ -56,6 +56,50 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
     this.setState({
       history: s
     })
+  }
+
+  render() {
+    return (
+      <div id="console">
+        <div className="name"><div>{this.state.name}</div></div>
+        <div className="position" style={{ display: 'none' }}>x: {this.state.position.x} y: {this.state.position.y}</div>
+        <MessageContainer data={this.state.history} />
+      </div>
+    );
+  }
+}
+
+interface IMessageContainerProps {
+  data: IHistory[]
+}
+
+interface IMessageContainerState extends IReactComponentsState {
+  hover?: boolean
+}
+
+
+class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> implements IReactComponents {
+  dom: HTMLDivElement
+
+  static defaultProps = {
+    data: []
+  }
+
+  constructor(props, context?: any) {
+    super(props, context);
+    this.state = {
+      initialized: false,
+      hover: false,
+    }
+  }
+
+  initialize(controller, callback?: () => void) { }
+
+  componentDidMount() {
+  }
+
+  componentDidUpdate() {
+    $(this.dom).scrollTop(Number.MAX_VALUE)
   }
 
   timeFormat(date: Date) {
@@ -69,15 +113,15 @@ export default class Console extends React.Component<IConsoleProps, IConsoleStat
   }
 
   render() {
+    let classes = 'history' + (this.state.hover ? ' hover' : '');
     return (
-      <div id="console">
-        <div className="name">欢迎你：{this.state.name}</div>
-        <div className="position" style={{display: 'none'}}>x: {this.state.position.x} y: {this.state.position.y}</div>
-        <div className="history">{
-          this.state.history.map((v, i) => (
-            <div key={i} className={v.key}><span className="time">[{this.timeFormat(v.time)}]</span><span className="event">[{v.event}]</span><span className="who">[{v.who}]</span><span className="content">{v.content}</span></div>
+      <div className={classes} onMouseEnter={() => this.setState({hover: true})} onMouseLeave={() => this.setState({hover: false})} ref={(c) => this.dom = c}>
+        <div className="container">{
+          this.props.data.map((v, i) => (
+            <div key={i} className={v.key}><span className="time">[{this.timeFormat(v.time) }]</span><span className="event">[{v.event}]</span><span className="who">[{v.who}]</span><span className="content">{v.content}</span></div>
           ))
-        }</div>
+        }
+        </div>
       </div>
     );
   }
