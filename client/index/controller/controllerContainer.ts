@@ -19,9 +19,12 @@ export default class ControllerContainer extends EventHandler {
     comp.on('initialize', this.handleInitialize);
   }
 
-  removeComponent(key: string) {
+  removeComponent(key: string, callback?: (comp: GameComponent) => void) {
     if (this.components[key]) {
       let comp = this.components[key];
+      if (callback) {
+        callback(comp);
+      }
       comp.destroy();
       delete this.components[key];
     }
