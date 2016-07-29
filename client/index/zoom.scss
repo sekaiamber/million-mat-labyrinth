@@ -16,6 +16,11 @@
       width: 18px;
       line-height: 18px;
       transition: transform linear 100ms;
+      text-shadow: #fff700 0 0 15px;
+
+      &.character {
+        text-shadow: #10ff00 0 0 15px;
+      }
     }
     .player-name {
       position: absolute;
@@ -24,6 +29,7 @@
       left: -66px;
       text-align: center;
       z-index: 9999;
+      color: #fff;
     }
     .say {
       position: absolute;
