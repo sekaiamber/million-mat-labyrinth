@@ -8,7 +8,8 @@ $historyWidth: 350px;
   height: 100%;
   width: 100%;
   .name {
-    border: solid 1px #000;
+    border: solid 1px #fff;
+    background: rgba(255, 255, 255, .3);
     border-radius: 5px;
     padding: 5px;
     height: 50px;
@@ -18,6 +19,7 @@ $historyWidth: 350px;
     overflow: hidden;
     line-height: 50px;
     width: $nameWidth;
+    color: #fff;
     div {
       box-sizing: border-box;
       width: auto;
@@ -38,7 +40,7 @@ $historyWidth: 350px;
     position: absolute;
     bottom: 10px;
     left: 10px;
-    border: solid 1px #000;
+    border: solid 1px #fff;
     border-radius: 5px;
     border-color: transparent;
     background-color: rgba(0, 0, 0, 0);
@@ -71,9 +73,9 @@ $historyWidth: 350px;
     }
 
     &.hover {
-      border-color: #000;
+      border-color: #fff;
       overflow-y: scroll;
-      background-color: rgba(0, 0, 0, .1);
+      background-color: rgba(255, 255, 255, .1);
     }
   }
 }

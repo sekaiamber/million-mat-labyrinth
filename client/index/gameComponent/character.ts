@@ -53,6 +53,7 @@ export default class CharacterGameComponent extends PlayerGameComponent {
     // dom
     let say = $('<div class="say hidden"><input /></div>');
     this.$dom.append(say);
+    $('.obj', this.$dom).addClass('character');
     this.$say = say;
     this.$input = $('input', say);
     // start move
