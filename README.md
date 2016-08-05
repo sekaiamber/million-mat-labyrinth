@@ -21,6 +21,15 @@ $ npm install
 $ npm run dev-client
 ```
 
+咱强烈建议使用`cnpm`，因为这个项目依赖里面有`node-sass`，这个库的install会从远端拉一些文件，而这个域名十分不稳定（因为GFW），经常会出乱七八糟的岔子。
+
+安装cnpm:
+```
+$ npm update
+$ npm install -g cnpm
+$ cnpm install
+```
+
 ## 部署
 
 前端静态文件生成，压缩，打包
