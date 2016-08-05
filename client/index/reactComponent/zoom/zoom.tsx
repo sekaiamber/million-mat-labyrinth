@@ -1,12 +1,12 @@
 import * as React from "react"
 import {Client} from 'corona-client'
-import {IPlayer} from './../../interface/IPlayer'
-import PlayerControllerContainer from './controller/player'
-import PlayerGameComponent from './gameComponent/player'
-import ControllerContainer from './controller/controllerContainer'
-import CharacterGameComponent from './gameComponent/character'
-import {IReactComponents, IReactComponentsState} from './IReactComponents'
-import Console from './console'
+import {IPlayer} from '../../../../interface/IPlayer'
+import PlayerControllerContainer from '../../controller/player'
+import PlayerGameComponent from '../../gameComponent/player'
+import ControllerContainer from '../../controller/controllerContainer'
+import CharacterGameComponent from '../../gameComponent/character'
+import {IReactComponents, IReactComponentsState} from '../IReactComponents'
+import Console from '../console/console'
 
 require('./zoom.scss');
 

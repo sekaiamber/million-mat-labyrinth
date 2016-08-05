@@ -1,8 +1,8 @@
 import * as React from "react"
 import * as $ from 'jquery'
-import Zoom from "./zoom";
-import CharacterGameComponent from './gameComponent/character'
-import {IReactComponents, IReactComponentsState} from './IReactComponents'
+import Zoom from "../zoom/zoom";
+import CharacterGameComponent from '../../gameComponent/character'
+import {IReactComponents, IReactComponentsState} from '../IReactComponents'
 
 require('./camera.scss');
 
