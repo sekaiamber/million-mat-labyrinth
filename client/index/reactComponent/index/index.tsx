@@ -1,10 +1,10 @@
 import * as React from "react"
 import * as $ from 'jquery'
 import {Client} from 'corona-client'
-import {IReactComponents, IReactComponentsState} from './IReactComponents'
+import {IReactComponents, IReactComponentsState} from '../IReactComponents'
 
-import Camera from "./camera"
-import Console from "./console"
+import Camera from "../camera/camera"
+import Console from "../console/console"
 
 require('./index.scss');
 

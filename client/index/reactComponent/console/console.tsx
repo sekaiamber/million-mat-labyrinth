@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as $ from 'jquery'
 import {Client} from 'corona-client'
-import {IReactComponents, IReactComponentsState} from './IReactComponents'
+import {IReactComponents, IReactComponentsState} from '../IReactComponents'
 
 require('./console.scss');
 
