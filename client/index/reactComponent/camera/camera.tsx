@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as $ from 'jquery'
 import Zoom from "../zoom/zoom";
+import Environment from "../environment/environment"
 import CharacterGameComponent from '../../gameComponent/character'
 import {IReactComponents, IReactComponentsState} from '../IReactComponents'
 
@@ -15,6 +16,7 @@ interface ICameraState extends IReactComponentsState {
 }
 
 export default class Camera extends React.Component<ICameraProps, ICameraState> implements IReactComponents {
+  environment: Environment
   camera: HTMLDivElement
   place: HTMLDivElement
   lens: HTMLDivElement
@@ -48,7 +50,8 @@ export default class Camera extends React.Component<ICameraProps, ICameraState> 
         x: player.position.x,
         y: player.position.y
       }
-    })
+    });
+    this.environment.updatePlayerPosition(player.position.x, player.position.y);
   }
   handleStartMove(player: CharacterGameComponent, zoom: Zoom) {
     this.$lens.css('transform', `scale(.9) translate3d(${-player.movingVector[0] * this.vectorScale}px, ${-player.movingVector[1] * this.vectorScale}px, 0px)`);
@@ -62,6 +65,7 @@ export default class Camera extends React.Component<ICameraProps, ICameraState> 
   render() {
     return (
       <div id="camera" className="lens" ref={(c) => { this.lens = c; this.$lens = $(c) }}>
+        <Environment ref={(c) => this.environment = c }/>
         <div className="place" ref={(c) => { this.place = c; this.$place = $(c) }} >
           <Zoom ref={(c) => { this.zoom = c }}
             console={this.props.console}
