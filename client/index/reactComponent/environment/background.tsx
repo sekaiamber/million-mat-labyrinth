@@ -21,11 +21,13 @@ export default class Background extends React.Component<IBackgroundProps, IBackg
 
   static defaultProps = {
     initialized: false,
-    layerCount: 1
+    layerCount: 2
   }
 
   dom: HTMLDivElement
   layers: HTMLDivElement[] = []
+  backgroundImageSize = 1000
+  backgroundImagePerspective = 0.8
 
   constructor(props, context?: any) {
     super(props, context);
@@ -47,7 +49,8 @@ export default class Background extends React.Component<IBackgroundProps, IBackg
   componentDidMount() {
     let $dom = $(this.dom);
     for (var i = 0; i < this.props.layerCount; i++) {
-      let $layer = $(`<div class="background-layer" style="transform: perspective(500px) translate3d(0px, 0px, -${300 * i}px); opacity: ${(this.props.layerCount - 1 * i) / this.props.layerCount / 2}"></div>`);
+      let bgsize = Math.pow(this.backgroundImagePerspective, i) * this.backgroundImageSize;
+      let $layer = $(`<div class="background-layer" style="opacity: ${(this.props.layerCount - 1 * i) / this.props.layerCount / 2};background-size: ${bgsize}px ${bgsize}px;"></div>`);
       $(this.dom).append($layer);
       this.layers.push($layer[0] as HTMLDivElement);
     }
@@ -56,7 +59,7 @@ export default class Background extends React.Component<IBackgroundProps, IBackg
   // interface
   updatePosition(x: number, y: number) {
     for (var i = 0; i < this.layers.length; i++) {
-      this.layers[i].style.backgroundPosition = `${-x}px ${-y}px`;
+      this.layers[i].style.backgroundPosition = `${-x * Math.pow(this.backgroundImagePerspective, i)}px ${-y * Math.pow(this.backgroundImagePerspective, i)}px`;
     }
   }
 
